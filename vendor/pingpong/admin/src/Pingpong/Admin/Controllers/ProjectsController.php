@@ -1,6 +1,6 @@
-<?php
-namespace Pingpong\Admin\Controllers;
+<?php namespace Pingpong\Admin\Controllers;
 
+use Illuminate\Support\Facades\Config;
 use DB;
 use DateTime;
 

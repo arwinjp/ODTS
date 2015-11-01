@@ -2,9 +2,15 @@
 
 namespace Pingpong\Admin\Controllers;
 Use Pingpong\Admin\Controllers\Version as Version;
+use Illuminate\Support\Facades\Config;
 use DB;
 
 class VersionsController extends BaseController {
+
+	public function __construct()
+    {
+    	$this->users = app(Config::get('auth.model'));
+    }
 
 	/**
 	 * Display a listing of the resource.

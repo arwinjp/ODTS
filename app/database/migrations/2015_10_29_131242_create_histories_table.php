@@ -3,7 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 
-class CreateDefaultsTable extends Migration {
+class CreateHistoriesTable extends Migration {
 
 	/**
 	 * Run the migrations.
@@ -12,13 +12,16 @@ class CreateDefaultsTable extends Migration {
 	 */
 	public function up()
 	{
-		Schema::create('default_projects', function(Blueprint $table)
+		Schema::create('histories', function(Blueprint $table)
 		{
 			$table->increments('id');
 			$table->integer('user_id')->unsigned();
-			$table->integer('project_id')->unsigned();
 			$table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
-			$table->foreign('project_id')->references('id')->on('projects')->onDelete('cascade');
+			$table->integer('defect_id')->unsigned();
+			$table->foreign('defect_id')->references('id')->on('defects')->onDelete('cascade');
+			$table->integer('status_id')->unsigned();
+			$table->foreign('status_id')->references('id')->on('statuses')->onDelete('cascade');
+			$table->text('status_comment');
 			$table->timestamps();
 		});
 	}
@@ -31,7 +34,7 @@ class CreateDefaultsTable extends Migration {
 	 */
 	public function down()
 	{
-		Schema::drop('default_projects');
+		Schema::drop('histories');
 	}
 
 }

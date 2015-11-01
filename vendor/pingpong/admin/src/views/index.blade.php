@@ -10,9 +10,9 @@
 @section('content')
 
 <div>
-	<?php $default = DB::table('default_projects')->where('user_id', '=', \Auth::user()->id)->get(); ?>
+	<?php $default = DB::table('default_projects')->where('user_id', '=', \Auth::user()->id)->first(); ?>
 	@if(isset($default))
-		{{ Form::model($default, ['method' => 'PUT', 'route' => array('admin.default.update', $default[0]->id)]) }}
+		{{ Form::model($default, ['method' => 'PUT', 'route' => array('admin.default.update', $default->id)]) }}
 	@else
 		{{ Form::open(array('route'=>'admin.default.store')) }}
 	@endif
@@ -22,7 +22,7 @@
     	<div class="form-group">
 			{{ Form::label('default', 'Default Project:') }}		
 			<?php $projects = Pingpong\Admin\Controllers\Project::lists('name', 'id'); ?>
-			{{ Form::select('project_id', $projects, isset($default) ? $default[0]->project_id : NULL, ['class' => 'form-control']) }}
+			{{ Form::select('project_id', $projects, isset($default) ? $default->project_id : NULL, ['class' => 'form-control']) }}
 			{{ $errors->first('user_id', '<div class="text-danger">:message</div>') }}
 		</div>
 		<div class="form-group">

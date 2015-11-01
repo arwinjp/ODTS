@@ -33,13 +33,12 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Pingpong\Admin\Controllers'],
         Route::get('app/reinstall', ['as' => 'admin.reinstall', 'uses' => 'SiteController@reinstall']);
         Route::get('cache/clear', ['as' => 'admin.cache.clear', 'uses' => 'SiteController@clearCache']);
 
-        Route::resource('projects', 'ProjectsController', $options);
-        Route::get('project/{id}', ['as' => 'admin.projects.show', 'uses' => 'ProjectsController@show']);
+        Route::resource('projects', 'ProjectsController');
 
         Route::delete('project/releases/{id}/destroy', ['as' => 'admin.project.release.destroy', 'uses' => 'VersionsController@destroy']);      
         Route::resource('project/{id}/releases', 'VersionsController', $options);
 
-        Route::resource('defects', 'DefectsController', $options);
+        Route::resource('defects', 'DefectsController');
 
         Route::resource('default', 'DefaultProjectsController', $options);
     });

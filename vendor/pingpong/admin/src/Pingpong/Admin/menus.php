@@ -28,7 +28,7 @@ Menu::create('admin-menu', function ($menu)
             }, ['icon' => 'fa fa-th']);
         }
 
-        if(Auth::user()->is('manager') or Auth::user()->is('admin'))
+        if(Auth::user())
         {
             $menu->dropdown('Defects', function ($sub)
             {

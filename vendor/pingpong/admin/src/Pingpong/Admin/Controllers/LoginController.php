@@ -27,7 +27,7 @@ class LoginController extends BaseController {
         if (\Auth::attempt($credentials, $remember))
         {
             $_SESSION['admin'] = \Auth::id();
-            return \Redirect::intended('admin')->withFlashMessage('Login Success!');
+            return \Redirect::intended('admin')->withFlashMessage('Login Success!')->withFlashType('info');
         }
 
         if (getenv('PINGPONG_ADMIN_TESTING'))

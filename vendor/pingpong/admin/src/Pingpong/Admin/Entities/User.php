@@ -66,4 +66,8 @@ class User extends Model implements UserInterface, RemindableInterface {
         return $query->whereRaw($sql);
     }
 
+    public function defect(){
+        return $this->hasMany('Pingpong\Admin\Controllers\Defect');
+    }
+
 }

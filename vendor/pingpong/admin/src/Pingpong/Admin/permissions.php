@@ -18,4 +18,5 @@ if (Auth::check())
     Trusty::when(['admin/permissions', 'admin/permissions/*'], 'manage_permissions');
     Trusty::when(['admin/roles', 'admin/roles/*'], 'manage_roles');
     Trusty::when('admin/settings', 'manage_settings');
+    Trusty::when('admin/projects', 'manage_projects');
 }

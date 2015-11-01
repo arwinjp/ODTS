@@ -55,5 +55,6 @@ function getDate(dateObject){
         newDate = yr + '-' + month + '-' + day;   
         return newDate;
 }
+
 </script>
 
