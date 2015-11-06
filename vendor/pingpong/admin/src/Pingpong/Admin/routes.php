@@ -38,8 +38,10 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Pingpong\Admin\Controllers'],
         Route::delete('project/releases/{id}/destroy', ['as' => 'admin.project.release.destroy', 'uses' => 'VersionsController@destroy']);      
         Route::resource('project/{id}/releases', 'VersionsController', $options);
 
+        Route::get('defects/self', ['as' => 'admin.defects.self', 'uses' => 'DefectsController@self']);
+        Route::get('defects/assigned', ['as' => 'admin.defects.assigned', 'uses' => 'DefectsController@assigned']);
         Route::resource('defects', 'DefectsController');
-
+        
         Route::resource('default', 'DefaultProjectsController', $options);
     });
 });

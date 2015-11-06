@@ -16,12 +16,14 @@ class DefectsController extends BaseController {
 	public function index()
 	{
 		$project = DB::table('default_projects')->where('user_id', '=', \Auth::user()->id)->select('project_id')->first();
-		if(!$project){
+		if(!$project)
+		{
 			return $this->redirect('home')
 					->withFlashMessage('Set Your Default Project Below!')
 			        ->withFlashType('info');
 		}
-		else{
+		else
+		{
 			$defects = DB::table('defects')
 						->leftjoin('projects', 'defects.project_id', '=', 'projects.id')
 						->leftjoin('versions', 'defects.version_id', '=', 'versions.id')
@@ -31,13 +33,13 @@ class DefectsController extends BaseController {
 						->leftjoin('users', 'defects.user_id', '=', 'users.id')
 						->where('defects.project_id', '=', $project->project_id)
 						->select('Defects.id AS DefectID', 'Defects.Summary AS DefectSummary', 'Defects.Description AS DefectDescription', 'users.name AS UserName', 'projects.name AS ProjectName', 'versions.number AS VersionNumber', 'severities.name AS SeverityName', 'priorities.name AS PriorityName', 'statuses.name AS StatusName')
+						->orderby('defects.id', 'DESC')
 						->paginate(25);
 			
 			$no = count($defects);
 			
 			return $this->view('defects.index', compact('defects', 'no'));
 		}
-
 	}
 
 	public function create()
@@ -57,8 +59,9 @@ class DefectsController extends BaseController {
 			$projects = Project::where('id', '=', $project->project_id)->select('name', 'id')->first();
 
 			$fields = $this->setFields(NULL, NULL, NULL, NULL, NULL, 'disabled', NULL, NULL, 'readonly');
+			$disablebutton = '0';
 
-			return $this->view('defects.create', compact('severities', 'priorities', 'statuses', 'versions', 'users', 'projects', 'fields'));
+			return $this->view('defects.create', compact('severities', 'priorities', 'statuses', 'versions', 'users', 'projects', 'fields', 'disablebutton'));
 		}	
 	}
 
@@ -138,7 +141,6 @@ class DefectsController extends BaseController {
 		\Session::forget('flash_type');
 		\Session::put('flash_type', 'warning');
 		$role = \Auth::user()->getRole()->name;
-		echo $role;
 		$disablebutton = '0';
 
 		if(($role == 'Tester'))
@@ -215,7 +217,6 @@ class DefectsController extends BaseController {
 
 	public function update($id)
 	{
-		return \Input::All();
 		app('Pingpong\Admin\Validation\Defect\Update')->validate($data = $this->inputAll());
 
 		$defect = Defect::find($id);
@@ -251,6 +252,74 @@ class DefectsController extends BaseController {
 		return $this->redirect('defects.index');
 	}
 
+	public function self()
+	{
+		$project = DB::table('default_projects')->where('user_id', '=', \Auth::user()->id)->select('project_id')->first();
+		if(!$project)
+		{
+			return $this->redirect('home')
+					->withFlashMessage('Set Your Default Project Below!')
+			        ->withFlashType('info');
+		}
+		else
+		{
+			$defects = DB::table('defects')
+						->leftjoin('projects', 'defects.project_id', '=', 'projects.id')
+						->leftjoin('versions', 'defects.version_id', '=', 'versions.id')
+						->leftjoin('severities', 'defects.severity_id', '=', 'severities.id')
+						->leftjoin('priorities', 'defects.priority_id', '=', 'priorities.id')
+						->leftjoin('statuses', 'defects.status_id', '=', 'statuses.id')
+						->leftjoin('users', 'defects.user_id', '=', 'users.id')
+						->where('defects.user_id', '=', \Auth::user()->id)
+						->select('Defects.id AS DefectID', 'Defects.Summary AS DefectSummary', 'Defects.Description AS DefectDescription', 'users.name AS UserName', 'projects.name AS ProjectName', 'versions.number AS VersionNumber', 'severities.name AS SeverityName', 'priorities.name AS PriorityName', 'statuses.name AS StatusName')
+						->orderby('defects.id', 'DESC')
+						->paginate(25);
+			
+			$no = count($defects);
+			
+			return $this->view('defects.self', compact('defects', 'no'));
+		}
+	}
+
+	public function assigned()
+	{
+		$role = \Auth::user()->getRole()->name;
+
+		if($role == 'Tester')
+		{
+			$statuses = ['4'];
+			$defects = $this->getAssigned($statuses);
+		}
+		elseif($role == 'Developer')
+		{
+			$statuses = ['3', '7'];
+			$defects = $this->getAssigned($statuses);
+		}
+		elseif($role == 'Test Lead')
+		{
+			$statuses = ['1', '4', '5'];
+			$defects = $this->getAssigned($statuses);
+		}
+		elseif($role == 'Manager')
+		{
+			$statuses = ['1', '4', '5'];
+			$defects = $this->getAssigned($statuses);
+		}
+		elseif($role == 'Dev Lead')
+		{
+			$statuses = ['2', '3', '7'];
+			$defects = $this->getAssigned($statuses);
+		}
+		else
+		{
+			$statuses = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10'];
+			$defects = $this->getAssigned($statuses);
+		}		
+		
+		$no = count($defects);
+		return $this->view('defects.index', compact('defects', 'no'));
+	}
+
 	private function setFields($version_id, $summary, $description, $severity_id, $priority_id, $status_id, $comment, $attachment)
 	{
 		$fields = array('name' => 'readonly');
@@ -264,6 +333,30 @@ class DefectsController extends BaseController {
 		$fields = array_add($fields, 'attachment', $attachment);
 		$fields = array_add($fields, 'user_id', 'readonly');
 		return $fields;
+	}
+
+	private function getAssigned($statuses)
+	{
+		$project = DB::table('default_projects')->where('user_id', '=', \Auth::user()->id)->select('project_id')->first();
+		if(!$project)
+		{
+			return $this->redirect('home')
+					->withFlashMessage('Set Your Default Project Below!')
+			        ->withFlashType('info');
+		}
+
+		return DB::table('defects')
+					->leftjoin('projects', 'defects.project_id', '=', 'projects.id')
+					->leftjoin('versions', 'defects.version_id', '=', 'versions.id')
+					->leftjoin('severities', 'defects.severity_id', '=', 'severities.id')
+					->leftjoin('priorities', 'defects.priority_id', '=', 'priorities.id')
+					->leftjoin('statuses', 'defects.status_id', '=', 'statuses.id')
+					->leftjoin('users', 'defects.user_id', '=', 'users.id')
+					->whereIn('defects.status_id', $statuses)
+					->where('defects.project_id', '=', $project->project_id)
+					->select('Defects.id AS DefectID', 'Defects.Summary AS DefectSummary', 'Defects.Description AS DefectDescription', 'users.name AS UserName', 'projects.name AS ProjectName', 'versions.number AS VersionNumber', 'severities.name AS SeverityName', 'priorities.name AS PriorityName', 'statuses.name AS StatusName')
+					->orderby('defects.id', 'DESC')
+					->paginate(25);			
 	}
 
 }

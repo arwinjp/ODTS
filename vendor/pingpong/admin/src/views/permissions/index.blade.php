@@ -30,7 +30,7 @@
 				<td>{{ $permission->description }}</td>
 				<td>{{ $permission->created_at }}</td>
 				<td class="text-center">
-					<a href="{{ route('admin.permissions.edit', $permission->id) }}">Edit</a>
+					<a href="{{ route('admin.permissions.edit', $permission->id) }}" class="btn btn-warning"><span class="glyphicon glyphicon-pencil"></span></a></a>
 					&middot;
 					@include('admin::partials.modal', ['data' => $permission, 'name' => 'permissions'])
 				</td>

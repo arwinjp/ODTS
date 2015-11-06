@@ -51,6 +51,7 @@
 				<th>Date</th>
 			</thead>
 			<tbody>
+				<?php $no=1;?>
 				@foreach ($histories as $history)
 				<tr>
 					<td>{{ $no }}</td>

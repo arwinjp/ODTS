@@ -34,7 +34,7 @@
 				</td>
 				<td>{{ $role->created_at }}</td>
 				<td class="text-center">
-					<a href="{{ route('admin.roles.edit', $role->id) }}">Edit</a>
+					<a href="{{ route('admin.roles.edit', $role->id) }}" class="btn btn-warning"><span class="glyphicon glyphicon-pencil"></span></a></a>
 					&middot;
 					@include('admin::partials.modal', ['data' => $role, 'name' => 'roles'])
 				</td>

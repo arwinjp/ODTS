@@ -26,7 +26,7 @@
 				<td>{{ $projects[0]->projectname }}</td>
 				<td>{{ $projects[0]->username }}</td>
 				<td class="text-center">
-					<a href="{{ route('admin.projects.edit', $projects[0]->id) }}">Edit</a>
+					<a href="{{ route('admin.projects.edit', $projects[0]->id) }}" class="btn btn-warning"><span class="glyphicon glyphicon-pencil"></span></a></a>
 					&middot;			
 					@include('admin::partials.modal', ['data' => $projects[0], 'name' => 'projects'])		
 				</td>

@@ -34,6 +34,8 @@ Menu::create('admin-menu', function ($menu)
             {
                 $sub->route('admin.defects.index', 'All Defects');
                 $sub->route('admin.defects.create', 'Add New Defect');
+                $sub->route('admin.defects.self', 'My Defects');
+                $sub->route('admin.defects.assigned', 'Assigned To Me');
             }, ['icon' => 'glyphicon glyphicon-exclamation-sign']);
         }
     }

@@ -1,5 +1,5 @@
-<a data-toggle="modal" href="#modal-delete-{{ $data->id }}">
-  Delete
+<a data-toggle="modal" href="#modal-delete-{{ $data->id }}" class="btn btn-danger">
+  <span class="glyphicon glyphicon-remove"></span></a>
 </a>
 <div id="modal-delete-{{ $data->id }}" class="modal text-left fade">
   <div class="modal-dialog">

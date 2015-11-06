@@ -34,11 +34,9 @@
 				<td>{{ $defect->PriorityName }}</td>
 				<td>{{ $defect->StatusName }}</td>
 				<td class="text-center">
-					<a href="{{ route('admin.defects.show', $defect->DefectID) }}" class="btn btn-info" title="View">
-					<span class="glyphicon glyphicon-eye-open"></span></a>
+					<a href="{{ route('admin.defects.show', $defect->DefectID) }}">View</a>
 					&middot;	
-					<a href="{{ route('admin.defects.edit', $defect->DefectID) }}" class="btn btn-primary" title="Update">
-					<span class="glyphicon glyphicon-open"></span></a>
+					<a href="{{ route('admin.defects.edit', $defect->DefectID) }}">Update</a>
 				</td>
 			</tr>
 			<?php $no++ ;?>

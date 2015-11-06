@@ -30,7 +30,7 @@
 				<td>{{ $verion->startdate }}</td>
 				<td>{{ $verion->enddate }}</td>
 				<td class="text-center">
-					<a href="{{ route('admin.projects.edit', $version->id) }}">Edit</a>
+					<a href="{{ route('admin.projects.edit', $version->id) }}" class="btn btn-warning"><span class="glyphicon glyphicon-pencil"></span></a></a>
 					&middot;
 					@include('admin::partials.modal', ['data' => $version, 'name' => 'versions'])
 				</td>

@@ -32,7 +32,8 @@
 				<td>{{ $user->email }}</td>
 				<td>{{ $user->created_at }}</td>
 				<td class="text-center">
-					<a href="{{ route('admin.users.edit', $user->id) }}">Edit</a>
+					<a href="{{ route('admin.users.edit', $user->id) }}" class="btn btn-warning">
+					<span class="glyphicon glyphicon-pencil"></span></a>
 					&middot;
 					@include('admin::partials.modal', ['data' => $user, 'name' => 'users'])
 				</td>
